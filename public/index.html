@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abdulaziz Alangari — Technical Project Manager</title>
+  <meta name="description" content="Technical Project Manager based in Riyadh. Delivering complex products across fintech, platform, and enterprise teams." />
+  <meta name="robots" content="index, follow" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+  <script src="https://unpkg.com/lucide@0.292.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="/js/_ds_bundle.js"></script>
+</head>
+<body>
+  <div id="root"><div class="portfolio-loading">Loading…</div></div>
+  <script src="/js/cv-generator.js"></script>
+  <script type="text/babel" data-presets="react">
+    const { Button, IconButton, Stat, SectionLabel, Badge, Tag, Card, TimelineEntry, Field, Input, Textarea } = window.AtlasPortfolioDesignSystem_0beb6f;
+
+    function Nav() {
+      const [scrolled, setScrolled] = React.useState(false);
+      React.useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 40);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+      }, []);
+      const { identity } = window.PORTFOLIO;
+      return (
+        <header className={'nav' + (scrolled ? ' nav--scrolled' : '')}>
+          <a className="nav__brand" href="#top">
+            <span className="nav__mark">{identity.first[0]}</span>
+            <span className="nav__name">{identity.first} {identity.last}</span>
+          </a>
+          <nav className="nav__links">
+            {[['About','#about'],['Experience','#experience'],['Work','#work'],['Contact','#contact']].map(([l,h]) => (
+              <a key={h} className="nav__link" href={h}>{l}</a>
+            ))}
+          </nav>
+          <div className="nav__cta">
+            <Button variant={scrolled ? 'primary' : 'inverse'} size="sm" href="#contact" iconRight={<i data-lucide="arrow-right"></i>}>Get in touch</Button>
+            <button className="nav__menu-btn" onClick={() => document.querySelector('.nav__links').classList.toggle('nav__links--open')} style={{background:'none',border:'none',cursor:'pointer',color:'inherit',padding:'4px'}}>
+              <i data-lucide="menu"></i>
+            </button>
+          </div>
+        </header>
+      );
+    }
+
+    function Hero() {
+      const { identity, stats } = window.PORTFOLIO;
+      return (
+        <section className="hero grain" id="top">
+          <span className="hero__edge">Portfolio — '26</span>
+          <div className="container hero__inner">
+            <div className="hero__eyebrow reveal"><span className="dot"></span>{identity.title}<span className="loc">— {identity.location}</span></div>
+            <h1 className="hero__name reveal">{identity.first}<span className="last">{identity.last}.</span></h1>
+            <p className="hero__tagline reveal">{identity.tagline}</p>
+            <div className="hero__actions reveal">
+              <Button variant="primary" size="lg" href="#contact" iconRight={<i data-lucide="arrow-right"></i>}>Start a conversation</Button>
+              <Button variant="inverse" size="lg" href="#work">View work</Button>
+              <button id="cv-download-btn" className="cv-btn" onClick={() => window.downloadCV()}>
+                <i data-lucide="download" style={{width:'14px',height:'14px'}}></i>Download CV
+              </button>
+            </div>
+            <div className="hero__stats reveal">
+              {stats.map(s => <Stat key={s.label} value={s.value} suffix={s.suffix} label={s.label} tone="ink" />)}
+            </div>
+          </div>
+          <div className="hero__scroll"><span>Scroll</span><span className="bar"></span></div>
+        </section>
+      );
+    }
+
+    function About() {
+      const { about, identity } = window.PORTFOLIO;
+      return (
+        <section className="section" id="about">
+          <div className="container">
+            <div className="sec-head reveal"><SectionLabel number="01">About</SectionLabel></div>
+            <div className="about__grid">
+              <div className="reveal">
+                <h2 className="about__lead">{about.headline}</h2>
+                <div className="about__bio">{about.paragraphs.map((p, i) => <p key={i}>{p}</p>)}</div>
+                <div className="about__avail"><span className="pulse"></span>{identity.available}</div>
+              </div>
+              <div className="skills reveal">
+                {about.skills.map(g => (
+                  <div className="skills__group" key={g.group}>
+                    <h4>{g.group}</h4>
+                    <ul>{g.items.map(it => <li key={it}>{it}</li>)}</ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    function Experience() {
+      const { experience } = window.PORTFOLIO;
+      return (
+        <section className="section section--ink grain" id="experience">
+          <div className="container">
+            <div className="sec-head reveal">
+              <SectionLabel number="02" tone="ink">Experience</SectionLabel>
+              <h2 className="sec-title">A decade of <span className="hl">shipping</span> under pressure.</h2>
+            </div>
+            <div className="timeline">
+              {experience.map((e, i) => (
+                <div className="reveal" key={i}>
+                  <TimelineEntry tone="ink" current={e.current} period={e.period} role={e.role} company={e.company} location={e.location} description={e.description} tags={e.tags} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    function Projects() {
+      const { projects } = window.PORTFOLIO;
+      return (
+        <section className="section" id="work">
+          <div className="container">
+            <div className="sec-head reveal">
+              <SectionLabel number="03">Selected work</SectionLabel>
+              <h2 className="sec-title">Programs I've owned end&#8209;to&#8209;end.</h2>
+            </div>
+            <div className="projects__grid">
+              {projects.map((p, i) => (
+                <div className="reveal" key={i} style={{ transitionDelay: (i % 3) * 70 + 'ms' }}>
+                  <Card hover className="proj" icon={<i data-lucide={p.icon}></i>}>
+                    <div className="proj__head">
+                      <Badge variant={p.type === '0 → 1' ? 'accent' : 'muted'}>{p.type}</Badge>
+                      <span className="proj__arrow"><i data-lucide="arrow-up-right"></i></span>
+                    </div>
+                    <h3 className="proj__title">{p.title}</h3>
+                    <p className="proj__desc">{p.desc}</p>
+                    <div className="proj__tags">{p.tags.map(t => <Tag key={t}>{t}</Tag>)}</div>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    function Certifications() {
+      const { certifications } = window.PORTFOLIO;
+      return (
+        <section className="section section--bone2" id="certifications">
+          <div className="container">
+            <div className="sec-head reveal">
+              <SectionLabel number="04">Certifications</SectionLabel>
+              <h2 className="sec-title">Credentials that back the work.</h2>
+            </div>
+            <div className="certs__grid">
+              {certifications.map((c, i) => (
+                <div className="reveal" key={i} style={{ transitionDelay: (i % 3) * 60 + 'ms' }}>
+                  <Card hover className="cert">
+                    <span className="cert__icon"><i data-lucide={c.icon}></i></span>
+                    <div><h3 className="cert__name">{c.name}</h3><div className="cert__meta">{c.issuer} · {c.year}</div></div>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    function Contact() {
+      const { contact, identity, social } = window.PORTFOLIO;
+      const [sent, setSent] = React.useState(false);
+      const [sending, setSending] = React.useState(false);
+      const [errors, setErrors] = React.useState({});
+      const [serverError, setServerError] = React.useState('');
+      React.useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [sent]);
+      async function submit(e) {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const next = {};
+        if (!fd.get('name')?.trim()) next.name = 'Your name is required.';
+        if (!fd.get('message')?.trim()) next.message = 'Please write a message.';
+        setErrors(next);
+        if (Object.keys(next).length > 0) return;
+        setSending(true); setServerError('');
+        try {
+          const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: fd.get('name'), email: fd.get('email'), phone: fd.get('phone'), message: fd.get('message') }) });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed to send');
+          setSent(true);
+        } catch (err) { setServerError(err.message); } finally { setSending(false); }
+      }
+      return (
+        <section className="section section--ink grain" id="contact">
+          <div className="container">
+            <div className="contact__grid">
+              <div className="contact__head reveal">
+                <SectionLabel number="05" tone="ink">Contact</SectionLabel>
+                <h2 className="sec-title" style={{ marginTop: '1.25rem' }}>{contact.headline}</h2>
+                <p className="contact__line">{contact.line}</p>
+                <div className="contact__direct">
+                  <a className="contact__email" href={'mailto:' + identity.email}><i data-lucide="mail"></i>{identity.email}</a>
+                  <div className="contact__socials">{social.map(s => <IconButton key={s.label} label={s.label} href={s.href} tone="ink"><i data-lucide={s.icon}></i></IconButton>)}</div>
+                </div>
+              </div>
+              <div className="reveal">
+                {sent ? (
+                  <div className="form"><div className="form__success"><span className="check"><i data-lucide="check"></i></span><h3>Message sent.</h3><p>Thanks for reaching out — I'll get back to you within a day.</p></div></div>
+                ) : (
+                  <form className="form" onSubmit={submit} noValidate>
+                    <Field label="Name" htmlFor="c-name" required tone="ink" error={errors.name}><Input id="c-name" name="name" tone="ink" error={!!errors.name} placeholder="Your name" /></Field>
+                    <div className="form__row">
+                      <Field label="Email" htmlFor="c-email" optional tone="ink"><Input id="c-email" name="email" type="email" tone="ink" placeholder="you@company.com" /></Field>
+                      <Field label="Phone" htmlFor="c-phone" optional tone="ink"><Input id="c-phone" name="phone" type="tel" tone="ink" placeholder="+966 ..." /></Field>
+                    </div>
+                    <Field label="Message" htmlFor="c-msg" required tone="ink" error={errors.message}><Textarea id="c-msg" name="message" tone="ink" rows={5} error={!!errors.message} placeholder="What are you trying to ship?" /></Field>
+                    {serverError && <p style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontSize: '12px', margin: 0 }}>{serverError}</p>}
+                    <Button type="submit" variant="primary" size="lg" fullWidth disabled={sending} iconRight={<i data-lucide="send"></i>}>{sending ? 'Sending...' : 'Send message'}</Button>
+                  </form>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    function Footer() {
+      const { social, identity } = window.PORTFOLIO;
+      const year = new Date().getFullYear();
+      return (
+        <footer className="footer">
+          <div className="container footer__inner">
+            <div className="footer__brand">
+              <span className="nav__mark" style={{ background: 'var(--bone-100)', color: 'var(--ink-900)' }}>{identity.first[0]}</span>
+              <span className="footer__name">{identity.first} <span className="a">{identity.last}</span></span>
+            </div>
+            <div className="footer__meta">© {year} · Built with intent</div>
+            <div className="footer__socials">{social.map(s => <IconButton key={s.label} label={s.label} href={s.href} tone="ink" bare><i data-lucide={s.icon}></i></IconButton>)}</div>
+          </div>
+        </footer>
+      );
+    }
+
+    function App() {
+      React.useEffect(() => {
+        const draw = () => window.lucide && window.lucide.createIcons();
+        draw();
+        const els = [].slice.call(document.querySelectorAll('.reveal'));
+        const vh = window.innerHeight || 800;
+        const hidden = els.filter(el => el.getBoundingClientRect().top > vh * 0.85);
+        hidden.forEach(el => el.classList.add('pre'));
+        let io = null;
+        if ('IntersectionObserver' in window && hidden.length) {
+          io = new IntersectionObserver(entries => { entries.forEach(en => { if (en.isIntersecting) { en.target.classList.remove('pre'); io.unobserve(en.target); } }); }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+          hidden.forEach(el => io.observe(el));
+        }
+        const fail = setTimeout(() => els.forEach(el => el.classList.remove('pre')), 4000);
+        const t = setTimeout(draw, 140);
+        return () => { io && io.disconnect(); clearTimeout(t); clearTimeout(fail); };
+      }, []);
+      return (
+        <div className="pf">
+          <Nav /><main><Hero /><About /><Experience /><Projects /><Certifications /><Contact /></main><Footer />
+        </div>
+      );
+    }
+    window.PortfolioApp = App;
+  </script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

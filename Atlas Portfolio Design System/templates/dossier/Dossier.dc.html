@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Portfolio — dossier" description="A technical operator's record: ivory paper, hairline rules, editorial serif + mono, one disciplined oxblood accent. Ledger experience, numbered project index, fillable contact form." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:#F6F5F1;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  ::selection{background:#B23A2E;color:#F6F5F1;}
+  @keyframes dossierCaret{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+  [data-reveal]{transition:opacity .6s cubic-bezier(.2,.7,.25,1),transform .6s cubic-bezier(.2,.7,.25,1);}
+  [data-bar][data-scrolled="true"]{background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom-color:var(--rule)!important;}
+  [data-bar-link]:hover,[data-bar-cta]:hover{color:var(--red)!important;border-color:var(--red)!important;}
+  [data-idx-row]:hover{background:var(--paper-2);}
+  [data-idx-row]:hover [data-idx-arrow]{color:var(--red);transform:translate(2px,-2px);}
+  [data-mail]:hover{color:var(--red)!important;}
+  [data-social]:hover{color:var(--red)!important;border-bottom-color:var(--red)!important;}
+  [data-field] input:focus,[data-field] textarea:focus{border-bottom-color:var(--red)!important;}
+  [data-field] input::placeholder,[data-field] textarea::placeholder{color:var(--muted);opacity:.7;}
+  @media (max-width:760px){
+    [data-bar-links]{display:none!important;}
+    [data-stat-strip]{grid-template-columns:1fr!important;}
+    [data-stat-cell]{border-right:none!important;border-bottom:1px solid var(--rule);}
+    [data-ledger-row]{grid-template-columns:1fr!important;gap:.5rem!important;}
+    [data-2col]{grid-template-columns:1fr!important;}
+  }
+  @media (prefers-reduced-motion:reduce){[data-reveal]{transition:none!important;}[data-caret]{animation:none!important;}}
+</style>
+</helmet>
+<div data-pf-root style="--paper:#F6F5F1;--paper-2:#ECEAE3;--ink:#16181D;--ink-2:#3C414A;--muted:#83878F;--red:#B23A2E;--rule:#DAD7CE;--rule-strong:#BFBBB0;--serif:'Newsreader',Georgia,'Times New Roman',serif;--mono:'IBM Plex Mono',ui-monospace,monospace;--container:1080px;--gutter:clamp(1.25rem,5vw,4rem);--section-y:clamp(4.5rem,10vw,9rem);background:var(--paper);color:var(--ink-2);min-height:100vh;font-family:var(--serif);overflow-x:clip;">
+
+  <header data-bar style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:1rem var(--gutter);border-bottom:1px solid transparent;transition:background .25s,border-color .25s;font-family:var(--mono);">
+    <a href="#top" style="text-decoration:none;color:var(--ink);display:flex;align-items:baseline;gap:.6rem;">
+      <span style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;">A. Alangari</span>
+      <span style="font-size:11px;color:var(--muted);letter-spacing:.14em;">TPM</span>
+    </a>
+    <nav data-bar-links style="display:flex;gap:1.7rem;font-size:11px;letter-spacing:.18em;text-transform:uppercase;">
+      <a data-bar-link href="#about" style="text-decoration:none;color:var(--muted);transition:color .2s;">About</a>
+      <a data-bar-link href="#experience" style="text-decoration:none;color:var(--muted);transition:color .2s;">Experience</a>
+      <a data-bar-link href="#work" style="text-decoration:none;color:var(--muted);transition:color .2s;">Work</a>
+      <a data-bar-link href="#contact" style="text-decoration:none;color:var(--muted);transition:color .2s;">Contact</a>
+    </nav>
+    <a data-bar-cta href="#contact" style="text-decoration:none;color:var(--ink);border:1px solid var(--rule-strong);padding:.5rem .9rem;font-size:11px;letter-spacing:.16em;text-transform:uppercase;transition:color .2s,border-color .2s;">Get in touch</a>
+  </header>
+
+  <main>
+
+    <section id="top" data-screen-label="Hero" style="min-height:94svh;display:flex;flex-direction:column;justify-content:center;padding:8rem var(--gutter) 3.5rem;position:relative;border-bottom:1px solid var(--ink);">
+      <div style="max-width:var(--container);margin:0 auto;width:100%;">
+        <div data-reveal style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:1rem;margin-bottom:clamp(2rem,5vw,3.5rem);">
+          <span style="color:var(--red);">§</span>Portfolio / 2026
+          <span style="flex:1;height:1px;background:var(--rule);"></span>
+          <span>Technical Project Manager — Riyadh, SA</span>
+        </div>
+        <h1 data-reveal style="font-family:var(--serif);font-weight:500;font-size:clamp(2.9rem,9vw,7.5rem);line-height:.98;letter-spacing:-.025em;color:var(--ink);margin:0;text-wrap:balance;">Abdulaziz Alangari<span style="color:var(--red);">.</span></h1>
+        <p data-reveal style="font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.3rem,2.6vw,1.95rem);line-height:1.4;color:var(--ink-2);max-width:30ch;margin:clamp(1.5rem,3vw,2.25rem) 0 0;">I turn ambiguous, high-stakes initiatives into shipped product.</p>
+        <div data-reveal data-stat-strip style="display:grid;grid-template-columns:repeat(3,1fr);margin-top:clamp(3rem,6vw,5rem);border-top:1px solid var(--ink);max-width:760px;">
+          <div data-stat-cell style="padding:1.4rem 1.5rem 1.4rem 0;border-right:1px solid var(--rule);">
+            <div style="font-family:var(--serif);font-weight:500;font-size:clamp(2.4rem,5vw,3.4rem);line-height:1;color:var(--ink);">12<span style="font-family:var(--mono);font-size:.32em;font-weight:500;color:var(--red);vertical-align:super;margin-left:.25em;letter-spacing:.05em;">YRS</span></div>
+            <div style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:.7rem;">Experience</div>
+          </div>
+          <div data-stat-cell style="padding:1.4rem 1.5rem;border-right:1px solid var(--rule);">
+            <div style="font-family:var(--serif);font-weight:500;font-size:clamp(2.4rem,5vw,3.4rem);line-height:1;color:var(--ink);">60<span style="font-family:var(--mono);font-size:.32em;font-weight:500;color:var(--red);vertical-align:super;margin-left:.15em;">+</span></div>
+            <div style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:.7rem;">Projects delivered</div>
+          </div>
+          <div data-stat-cell style="padding:1.4rem 0 1.4rem 1.5rem;">
+            <div style="font-family:var(--serif);font-weight:500;font-size:clamp(2.4rem,5vw,3.4rem);line-height:1;color:var(--ink);">5</div>
+            <div style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:.7rem;">Industries</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" data-screen-label="About" style="padding-block:var(--section-y);">
+      <div style="max-width:var(--container);margin:0 auto;padding-inline:var(--gutter);">
+        <div data-reveal style="display:flex;align-items:baseline;gap:1.5rem;border-top:1px solid var(--ink);padding-top:1.1rem;margin-bottom:clamp(2.25rem,4vw,3.5rem);">
+          <span style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--red);">§01</span>
+          <span style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);">About</span>
+        </div>
+        <h2 data-reveal style="font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,4vw,3rem);line-height:1.12;letter-spacing:-.015em;color:var(--ink);margin:0 0 clamp(2rem,4vw,3rem);max-width:20ch;text-wrap:balance;">Engineering-fluent delivery, without the drama.</h2>
+        <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,5rem);align-items:start;">
+          <div data-reveal>
+            <p style="font-family:var(--serif);font-size:1.2rem;line-height:1.65;color:var(--ink-2);margin:0 0 1.2rem;">I'm a technical project manager who lives in the space between engineering and the business. For over a decade I've led delivery for platform migrations, payments systems, and 0→1 products — turning fuzzy, high-stakes goals into roadmaps teams can actually execute.</p>
+            <p style="font-family:var(--serif);font-size:1.2rem;line-height:1.65;color:var(--ink-2);margin:0;">I care about the unglamorous parts: clear scope, honest timelines, and teams that trust each other. Good project management should be invisible — you just notice that things ship.</p>
+            <div style="display:inline-flex;align-items:center;gap:.6rem;margin-top:1.6rem;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">
+              <span style="width:7px;height:7px;border-radius:50%;background:var(--red);"></span>Open to senior TPM &amp; program roles
+            </div>
+          </div>
+          <div data-reveal>
+            <div data-ledger-row style="display:grid;grid-template-columns:120px 1fr;gap:1.5rem;border-top:1px solid var(--rule);padding:1.1rem 0;">
+              <span style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);">Delivery</span>
+              <span style="font-family:var(--serif);font-size:1.05rem;line-height:1.5;color:var(--ink);">Agile / Scrum · Roadmapping · Risk management · Release planning</span>
+            </div>
+            <div data-ledger-row style="display:grid;grid-template-columns:120px 1fr;gap:1.5rem;border-top:1px solid var(--rule);padding:1.1rem 0;">
+              <span style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);">Technical</span>
+              <span style="font-family:var(--serif);font-size:1.05rem;line-height:1.5;color:var(--ink);">System design literacy · API &amp; data flows · Cloud (AWS / GCP) · CI/CD pipelines</span>
+            </div>
+            <div data-ledger-row style="display:grid;grid-template-columns:120px 1fr;gap:1.5rem;border-top:1px solid var(--rule);padding:1.1rem 0;">
+              <span style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);">Leadership</span>
+              <span style="font-family:var(--serif);font-size:1.05rem;line-height:1.5;color:var(--ink);">Stakeholder alignment · Cross-functional leadership · Mentoring · Vendor management</span>
+            </div>
+            <div data-ledger-row style="display:grid;grid-template-columns:120px 1fr;gap:1.5rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:1.1rem 0;">
+              <span style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);">Tooling</span>
+              <span style="font-family:var(--serif);font-size:1.05rem;line-height:1.5;color:var(--ink);">Jira &amp; Linear · Notion · Figma · Metabase</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+        <section id="experience" data-screen-label="Experience" style="padding-block:var(--section-y);background:var(--paper-2);">
+      <div style="max-width:var(--container);margin:0 auto;padding-inline:var(--gutter);">
+        <div data-reveal style="display:flex;align-items:baseline;gap:1.5rem;border-top:1px solid var(--ink);padding-top:1.1rem;margin-bottom:clamp(2rem,4vw,3rem);">
+          <span style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--red);">§02</span>
+          <span style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);">Experience</span>
+        </div>
+        <h2 data-reveal style="font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,4vw,3rem);line-height:1.12;letter-spacing:-.015em;color:var(--ink);margin:0 0 clamp(2rem,4vw,3rem);max-width:18ch;text-wrap:balance;">A decade of shipping under pressure.</h2>
+
+        <div data-reveal data-ledger-row style="display:grid;grid-template-columns:160px 1fr;gap:1.5rem 2.5rem;border-top:1px solid var(--ink);padding:1.75rem 0;">
+          <div style="font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--red);display:flex;align-items:baseline;gap:.5rem;"><span>●</span>2021 — Present</div>
+          <div>
+            <h3 style="font-family:var(--serif);font-weight:500;font-size:clamp(1.5rem,2.6vw,1.9rem);line-height:1.15;letter-spacing:-.01em;color:var(--ink);margin:0;">Senior Technical Project Manager</h3>
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted);margin-top:.5rem;text-transform:uppercase;">Northwind Payments — Riyadh / Remote</div>
+            <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.6;color:var(--ink-2);margin:1rem 0 0;max-width:60ch;">Lead delivery across platform and payments squads. Ran a zero-downtime ledger migration serving 4 markets and 2M+ users, and stood up a cross-team delivery cadence that cut release slippage by half.</p>
+            <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);margin-top:1rem;">payments · platform · agile · stakeholders</div>
+          </div>
+        </div>
+
+        <div data-reveal data-ledger-row style="display:grid;grid-template-columns:160px 1fr;gap:1.5rem 2.5rem;border-top:1px solid var(--rule-strong);padding:1.75rem 0;">
+          <div style="font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted);">2018 — 2021</div>
+          <div>
+            <h3 style="font-family:var(--serif);font-weight:500;font-size:clamp(1.5rem,2.6vw,1.9rem);line-height:1.15;letter-spacing:-.01em;color:var(--ink);margin:0;">Technical Project Manager</h3>
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted);margin-top:.5rem;text-transform:uppercase;">Helix Health — Dubai, AE</div>
+            <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.6;color:var(--ink-2);margin:1rem 0 0;max-width:60ch;">Delivered an HL7 / FHIR integration platform connecting 30+ hospital systems. Cut onboarding time for new providers by 60% and owned vendor relationships end to end.</p>
+            <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);margin-top:1rem;">healthcare · integrations · fhir · vendor mgmt</div>
+          </div>
+        </div>
+
+        <div data-reveal data-ledger-row style="display:grid;grid-template-columns:160px 1fr;gap:1.5rem 2.5rem;border-top:1px solid var(--rule-strong);padding:1.75rem 0;">
+          <div style="font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted);">2015 — 2018</div>
+          <div>
+            <h3 style="font-family:var(--serif);font-weight:500;font-size:clamp(1.5rem,2.6vw,1.9rem);line-height:1.15;letter-spacing:-.01em;color:var(--ink);margin:0;">Program Manager</h3>
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted);margin-top:.5rem;text-transform:uppercase;">Vector Logistics — Cairo, EG</div>
+            <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.6;color:var(--ink-2);margin:1rem 0 0;max-width:60ch;">Owned the rollout of a fleet tracking and routing platform across 9 regions, coordinating engineering, ops, and field teams under a hard regulatory deadline.</p>
+            <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);margin-top:1rem;">logistics · rollout · data · operations</div>
+          </div>
+        </div>
+
+        <div data-reveal data-ledger-row style="display:grid;grid-template-columns:160px 1fr;gap:1.5rem 2.5rem;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--ink);padding:1.75rem 0;">
+          <div style="font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted);">2013 — 2015</div>
+          <div>
+            <h3 style="font-family:var(--serif);font-weight:500;font-size:clamp(1.5rem,2.6vw,1.9rem);line-height:1.15;letter-spacing:-.01em;color:var(--ink);margin:0;">Associate Project Manager</h3>
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted);margin-top:.5rem;text-transform:uppercase;">Brightwave Studios — Cairo, EG</div>
+            <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.6;color:var(--ink-2);margin:1rem 0 0;max-width:60ch;">Coordinated delivery for client web and mobile builds — scoping, sprint planning, and keeping a dozen stakeholders pointed in the same direction.</p>
+            <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);margin-top:1rem;">agency · web · mobile · scrum</div>
+          </div>
+        </div>
+      </div>
+    </section>
+        <section id="work" data-screen-label="Projects" style="padding-block:var(--section-y);">
+      <div style="max-width:var(--container);margin:0 auto;padding-inline:var(--gutter);">
+        <div data-reveal style="display:flex;align-items:baseline;gap:1.5rem;border-top:1px solid var(--ink);padding-top:1.1rem;margin-bottom:clamp(2rem,4vw,3rem);">
+          <span style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--red);">§03</span>
+          <span style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);">Selected work</span>
+        </div>
+        <h2 data-reveal style="font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,4vw,3rem);line-height:1.12;letter-spacing:-.015em;color:var(--ink);margin:0 0 clamp(2rem,4vw,3rem);max-width:20ch;text-wrap:balance;">Programs I've owned end&#8209;to&#8209;end.</h2>
+
+        <div data-reveal>
+          <a data-idx-row href="#contact" style="text-decoration:none;display:grid;grid-template-columns:48px 1fr auto;gap:1.25rem 1.75rem;align-items:baseline;border-top:1px solid var(--rule-strong);padding:1.6rem .75rem;transition:background .2s;">
+            <span style="font-family:var(--mono);font-size:13px;color:var(--red);">01</span>
+            <div>
+              <h3 style="font-family:var(--serif);font-weight:500;font-size:clamp(1.35rem,2.4vw,1.75rem);line-height:1.2;color:var(--ink);margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem;">Payments re-platform <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">[Platform]</span></h3>
+              <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.55;color:var(--ink-2);margin:.5rem 0 .6rem;max-width:60ch;">Migrated checkout to a new double-entry ledger with zero downtime across four markets.</p>
+              <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);">ledger · aws · event-driven</div>
+            </div>
+            <span data-idx-arrow style="font-family:var(--mono);font-size:18px;color:var(--rule-strong);transition:transform .2s,color .2s;">↗</span>
+          </a>
+          <a data-idx-row href="#contact" style="text-decoration:none;display:grid;grid-template-columns:48px 1fr auto;gap:1.25rem 1.75rem;align-items:baseline;border-top:1px solid var(--rule-strong);padding:1.6rem .75rem;transition:background .2s;">
+            <span style="font-family:var(--mono);font-size:13px;color:var(--red);">02</span>
+            <div>
+              <h3 style="font-family:var(--serif);font-weight:500;font-size:clamp(1.35rem,2.4vw,1.75rem);line-height:1.2;color:var(--ink);margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem;">Merchant onboarding <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);">[0 → 1]</span></h3>
+              <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.55;color:var(--ink-2);margin:.5rem 0 .6rem;max-width:60ch;">Built a self-serve KYC + onboarding flow that cut activation from days to minutes.</p>
+              <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);">kyc · workflow · react</div>
+            </div>
+            <span data-idx-arrow style="font-family:var(--mono);font-size:18px;color:var(--rule-strong);transition:transform .2s,color .2s;">↗</span>
+          </a>
+          <a data-idx-row href="#contact" style="text-decoration:none;display:grid;grid-template-columns:48px 1fr auto;gap:1.25rem 1.75rem;align-items:baseline;border-top:1px solid var(--rule-strong);padding:1.6rem .75rem;transition:background .2s;">
+            <span style="font-family:var(--mono);font-size:13px;color:var(--red);">03</span>
+            <div>
+              <h3 style="font-family:var(--serif);font-weight:500;font-size:clamp(1.35rem,2.4vw,1.75rem);line-height:1.2;color:var(--ink);margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem;">FHIR integration hub <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">[Platform]</span></h3>
+              <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.55;color:var(--ink-2);margin:.5rem 0 .6rem;max-width:60ch;">Connected 30+ hospital systems through a normalized clinical data layer.</p>
+              <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);">fhir · hl7 · integrations</div>
+            </div>
+            <span data-idx-arrow style="font-family:var(--mono);font-size:18px;color:var(--rule-strong);transition:transform .2s,color .2s;">↗</span>
+          </a>
+          <a data-idx-row href="#contact" style="text-decoration:none;display:grid;grid-template-columns:48px 1fr auto;gap:1.25rem 1.75rem;align-items:baseline;border-top:1px solid var(--rule-strong);padding:1.6rem .75rem;transition:background .2s;">
+            <span style="font-family:var(--mono);font-size:13px;color:var(--red);">04</span>
+            <div>
+              <h3 style="font-family:var(--serif);font-weight:500;font-size:clamp(1.35rem,2.4vw,1.75rem);line-height:1.2;color:var(--ink);margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem;">Delivery cockpit <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">[Internal tool]</span></h3>
+              <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.55;color:var(--ink-2);margin:.5rem 0 .6rem;max-width:60ch;">A live program dashboard pulling Jira, Git, and incidents into one risk view.</p>
+              <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);">dashboards · jira-api · metrics</div>
+            </div>
+            <span data-idx-arrow style="font-family:var(--mono);font-size:18px;color:var(--rule-strong);transition:transform .2s,color .2s;">↗</span>
+          </a>
+          <a data-idx-row href="#contact" style="text-decoration:none;display:grid;grid-template-columns:48px 1fr auto;gap:1.25rem 1.75rem;align-items:baseline;border-top:1px solid var(--rule-strong);padding:1.6rem .75rem;transition:background .2s;">
+            <span style="font-family:var(--mono);font-size:13px;color:var(--red);">05</span>
+            <div>
+              <h3 style="font-family:var(--serif);font-weight:500;font-size:clamp(1.35rem,2.4vw,1.75rem);line-height:1.2;color:var(--ink);margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem;">Monolith → services <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">[Migration]</span></h3>
+              <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.55;color:var(--ink-2);margin:.5rem 0 .6rem;max-width:60ch;">Decomposed a 9-year-old monolith into domain services with no feature freeze.</p>
+              <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);">microservices · strangler · ci/cd</div>
+            </div>
+            <span data-idx-arrow style="font-family:var(--mono);font-size:18px;color:var(--rule-strong);transition:transform .2s,color .2s;">↗</span>
+          </a>
+          <a data-idx-row href="#contact" style="text-decoration:none;display:grid;grid-template-columns:48px 1fr auto;gap:1.25rem 1.75rem;align-items:baseline;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--ink);padding:1.6rem .75rem;transition:background .2s;">
+            <span style="font-family:var(--mono);font-size:13px;color:var(--red);">06</span>
+            <div>
+              <h3 style="font-family:var(--serif);font-weight:500;font-size:clamp(1.35rem,2.4vw,1.75rem);line-height:1.2;color:var(--ink);margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem;">Fleet routing <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);">[0 → 1]</span></h3>
+              <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.55;color:var(--ink-2);margin:.5rem 0 .6rem;max-width:60ch;">Real-time routing and tracking platform rolled out to nine regions.</p>
+              <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);">maps · realtime · operations</div>
+            </div>
+            <span data-idx-arrow style="font-family:var(--mono);font-size:18px;color:var(--rule-strong);transition:transform .2s,color .2s;">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+        <section id="certifications" data-screen-label="Certifications" style="padding-block:var(--section-y);background:var(--paper-2);">
+      <div style="max-width:var(--container);margin:0 auto;padding-inline:var(--gutter);">
+        <div data-reveal style="display:flex;align-items:baseline;gap:1.5rem;border-top:1px solid var(--ink);padding-top:1.1rem;margin-bottom:clamp(2rem,4vw,3rem);">
+          <span style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--red);">§04</span>
+          <span style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);">Certifications</span>
+        </div>
+        <div data-reveal data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(2.5rem,6vw,5rem);">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;border-top:1px solid var(--rule-strong);padding:1.25rem 0;">
+              <span style="font-family:var(--serif);font-weight:500;font-size:1.2rem;color:var(--ink);">PMP®</span>
+              <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;">PMI · 2020</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;border-top:1px solid var(--rule);padding:1.25rem 0;">
+              <span style="font-family:var(--serif);font-weight:500;font-size:1.2rem;color:var(--ink);">PMI-ACP®</span>
+              <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;">PMI · 2021</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule-strong);padding:1.25rem 0;">
+              <span style="font-family:var(--serif);font-weight:500;font-size:1.2rem;color:var(--ink);">Certified ScrumMaster</span>
+              <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;">Scrum Alliance · 2019</span>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;border-top:1px solid var(--rule-strong);padding:1.25rem 0;">
+              <span style="font-family:var(--serif);font-weight:500;font-size:1.2rem;color:var(--ink);">AWS Cloud Practitioner</span>
+              <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;">Amazon · 2022</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;border-top:1px solid var(--rule);padding:1.25rem 0;">
+              <span style="font-family:var(--serif);font-weight:500;font-size:1.2rem;color:var(--ink);">SAFe® Agilist</span>
+              <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;">Scaled Agile · 2023</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule-strong);padding:1.25rem 0;">
+              <span style="font-family:var(--serif);font-weight:500;font-size:1.2rem;color:var(--ink);">ITIL® 4 Foundation</span>
+              <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;">Axelos · 2021</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+        <section id="contact" data-screen-label="Contact" style="padding-block:var(--section-y);">
+      <div style="max-width:var(--container);margin:0 auto;padding-inline:var(--gutter);">
+        <div data-reveal style="display:flex;align-items:baseline;gap:1.5rem;border-top:1px solid var(--ink);padding-top:1.1rem;margin-bottom:clamp(2.25rem,4vw,3.5rem);">
+          <span style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--red);">§05</span>
+          <span style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);">Contact</span>
+        </div>
+        <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,5rem);align-items:start;">
+          <div data-reveal>
+            <h2 style="font-family:var(--serif);font-weight:500;font-size:clamp(2.1rem,4.5vw,3.4rem);line-height:1.08;letter-spacing:-.02em;color:var(--ink);margin:0;text-wrap:balance;">Got something hard to ship?</h2>
+            <p style="font-family:var(--serif);font-style:italic;font-size:1.25rem;line-height:1.5;color:var(--ink-2);margin:1.5rem 0 2.5rem;max-width:38ch;">Whether it's a migration nobody wants to touch or a 0→1 you need off the ground — I'd like to hear about it. I usually reply within a day.</p>
+            <a data-mail href="mailto:hello@alangari.me" style="display:inline-block;font-family:var(--serif);font-weight:500;font-size:clamp(1.4rem,3vw,2rem);color:var(--ink);text-decoration:none;border-bottom:2px solid var(--red);padding-bottom:.2rem;transition:color .2s;">hello@alangari.me</a>
+            <div style="display:flex;gap:1.5rem;margin-top:2rem;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+              <a data-social href="#" style="text-decoration:none;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:2px;transition:color .2s,border-color .2s;">GitHub ↗</a>
+              <a data-social href="#" style="text-decoration:none;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:2px;transition:color .2s,border-color .2s;">LinkedIn ↗</a>
+            </div>
+          </div>
+
+          <div data-reveal>
+            <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+              <form onSubmit="{{ submit }}" novalidate style="display:grid;gap:2rem;border-top:1px solid var(--ink);padding-top:2rem;">
+                <div data-2col style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+                  <label data-field style="display:block;">
+                    <span style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;gap:.4rem;">Name <span style="color:var(--red);">*</span></span>
+                    <input name="name" placeholder="Your name" style="width:100%;margin-top:.6rem;background:transparent;border:none;border-bottom:1px solid var(--rule-strong);padding:.55rem 0;font-family:var(--serif);font-size:1.1rem;color:var(--ink);outline:none;transition:border-color .2s;">
+                    <span style="font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--red);display:block;margin-top:.4rem;min-height:1em;">{{ errName }}</span>
+                  </label>
+                  <label data-field style="display:block;">
+                    <span style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;gap:.4rem;">Email <span style="color:var(--rule-strong);">opt.</span></span>
+                    <input name="email" type="email" placeholder="you@company.com" style="width:100%;margin-top:.6rem;background:transparent;border:none;border-bottom:1px solid var(--rule-strong);padding:.55rem 0;font-family:var(--serif);font-size:1.1rem;color:var(--ink);outline:none;transition:border-color .2s;">
+                  </label>
+                </div>
+                <label data-field style="display:block;">
+                  <span style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;gap:.4rem;">Phone <span style="color:var(--rule-strong);">opt.</span></span>
+                  <input name="phone" type="tel" placeholder="+966 ..." style="width:100%;margin-top:.6rem;background:transparent;border:none;border-bottom:1px solid var(--rule-strong);padding:.55rem 0;font-family:var(--serif);font-size:1.1rem;color:var(--ink);outline:none;transition:border-color .2s;">
+                </label>
+                <label data-field style="display:block;">
+                  <span style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;gap:.4rem;">Message <span style="color:var(--red);">*</span></span>
+                  <textarea name="message" rows="4" placeholder="What are you trying to ship?" style="width:100%;margin-top:.6rem;background:transparent;border:none;border-bottom:1px solid var(--rule-strong);padding:.55rem 0;font-family:var(--serif);font-size:1.1rem;color:var(--ink);outline:none;resize:vertical;transition:border-color .2s;"></textarea>
+                  <span style="font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--red);display:block;margin-top:.4rem;min-height:1em;">{{ errMsg }}</span>
+                </label>
+                <button type="submit" style="justify-self:start;font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;background:var(--red);color:var(--paper);border:none;padding:1rem 1.75rem;cursor:pointer;transition:background .2s;" style-hover="background:var(--ink)">Send message →</button>
+              </form>
+            </sc-if>
+            <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top:1px solid var(--ink);padding-top:2rem;">
+                <div style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);">✓ Sent</div>
+                <h3 style="font-family:var(--serif);font-weight:500;font-size:1.8rem;color:var(--ink);margin:1rem 0 .6rem;">Message sent.</h3>
+                <p style="font-family:var(--serif);font-size:1.15rem;line-height:1.55;color:var(--ink-2);margin:0;max-width:42ch;">Thanks for reaching out — I'll get back to you within a day.</p>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer style="border-top:1px solid var(--ink);">
+    <div style="max-width:var(--container);margin:0 auto;padding:2.5rem var(--gutter);display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;font-family:var(--mono);">
+      <span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);font-weight:500;">Abdulaziz Alangari</span>
+      <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">© 2026 — Built with intent</span>
+      <div style="display:flex;gap:1.4rem;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <a data-social href="#" style="text-decoration:none;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:2px;transition:color .2s,border-color .2s;">GitHub</a>
+        <a data-social href="#" style="text-decoration:none;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:2px;transition:color .2s,border-color .2s;">LinkedIn</a>
+        <a data-social href="mailto:hello@alangari.me" style="text-decoration:none;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:2px;transition:color .2s,border-color .2s;">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;red&quot;,&quot;ink&quot;,&quot;blue&quot;],&quot;default&quot;:&quot;red&quot;,&quot;tsType&quot;:&quot;\&quot;red\&quot; | \&quot;ink\&quot; | \&quot;blue\&quot;&quot;},&quot;paper&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cool&quot;,&quot;warm&quot;],&quot;default&quot;:&quot;warm&quot;,&quot;tsType&quot;:&quot;\&quot;cool\&quot; | \&quot;warm\&quot;&quot;},&quot;compact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { sent: false, errors: {} };
+
+  componentDidMount() {
+    this._applyTheme();
+    this._bar = document.querySelector('[data-bar]');
+    this._onScroll = () => {
+      if (this._bar) this._bar.setAttribute('data-scrolled', String(window.scrollY > 24));
+    };
+    this._onScroll();
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._setupReveal();
+  }
+
+  componentDidUpdate() {
+    this._applyTheme();
+  }
+
+  componentWillUnmount() {
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+    if (this._failsafe) clearTimeout(this._failsafe);
+    if (this._io) this._io.disconnect();
+  }
+
+  _applyTheme() {
+    const el = document.querySelector('[data-pf-root]');
+    if (!el) return;
+    const accent = this.props.accent || 'red';
+    const reds = { red: '#B23A2E', ink: '#16181D', blue: '#2F5DA8' };
+    el.style.setProperty('--red', reds[accent] || reds.red);
+    const warm = this.props.paper === 'warm';
+    el.style.setProperty('--paper', warm ? '#F4F1E9' : '#F6F5F1');
+    el.style.setProperty('--paper-2', warm ? '#EAE6DA' : '#ECEAE3');
+    el.style.setProperty('--rule', warm ? '#DBD5C7' : '#DAD7CE');
+    el.style.setProperty('--section-y', this.props.compact ? 'clamp(3rem, 7vw, 6rem)' : 'clamp(4.5rem, 10vw, 9rem)');
+  }
+
+  _setupReveal() {
+    const els = [].slice.call(document.querySelectorAll('[data-reveal]'));
+    const vh = window.innerHeight || 800;
+    const hidden = els.filter((el) => el.getBoundingClientRect().top > vh * 0.85);
+    hidden.forEach((el) => { el.style.opacity = '0'; el.style.transform = 'translateY(16px)'; });
+    const reveal = (el) => { el.style.opacity = ''; el.style.transform = ''; };
+    if ('IntersectionObserver' in window && hidden.length) {
+      this._io = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) { reveal(en.target); this._io.unobserve(en.target); }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+      hidden.forEach((el) => this._io.observe(el));
+    }
+    this._failsafe = setTimeout(() => els.forEach(reveal), 4000);
+  }
+
+  submit(e) {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const next = {};
+    const name = (fd.get('name') || '').toString().trim();
+    const msg = (fd.get('message') || '').toString().trim();
+    if (!name) next.name = 'Your name helps me reply properly.';
+    if (!msg) next.message = 'Tell me a little about it.';
+    this.setState({ errors: next });
+    if (Object.keys(next).length === 0) this.setState({ sent: true });
+  }
+
+  renderVals() {
+    const errors = this.state.errors || {};
+    return {
+      sent: this.state.sent,
+      showForm: !this.state.sent,
+      errName: errors.name || '',
+      errMsg: errors.message || '',
+      submit: (e) => this.submit(e),
+    };
+  }
+}
+</script>
+</body>
+</html>

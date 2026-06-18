@@ -1,0 +1,47 @@
+/* ============================================================
+   ATLAS — TYPOGRAPHY SYSTEM
+   Display + body: Newsreader  — editorial serif, optical sizes
+   Labels / data:  IBM Plex Mono — technical marks, stats, tags
+   The serif-headline-over-mono-label pairing is the signature.
+   ============================================================ */
+
+:root {
+  /* Families */
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-body: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Type scale (fluid-friendly base; px shown for reference) */
+  --text-xs:   0.75rem;   /* 12 — mono micro labels */
+  --text-sm:   0.875rem;  /* 14 */
+  --text-base: 1rem;      /* 16 — body */
+  --text-lg:   1.1875rem; /* 19 — lead body */
+  --text-xl:   1.4rem;    /* 22 */
+  --text-2xl:  1.8rem;    /* 29 */
+  --text-3xl:  2.4rem;    /* 38 */
+  --text-4xl:  3rem;      /* 48 */
+  --text-5xl:  4rem;      /* 64 */
+  --text-6xl:  5.5rem;    /* 88 */
+  --text-7xl:  7.5rem;    /* 120 — hero display */
+
+  /* Weights — Newsreader reads strong at 500; 600/700 for emphasis */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 600;
+  --weight-black: 700;
+
+  /* Line heights */
+  --leading-none: 0.98;
+  --leading-tight: 1.08;
+  --leading-snug: 1.18;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  /* Letter spacing */
+  --tracking-display: -0.02em;   /* tighten big serif display */
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-label: 0.16em;      /* uppercase mono eyebrows */
+  --tracking-wide: 0.08em;
+}

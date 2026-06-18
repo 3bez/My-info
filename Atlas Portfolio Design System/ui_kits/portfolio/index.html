@@ -1,0 +1,74 @@
+<!-- @dsCard group="Portfolio" viewport="1280x860" name="Portfolio — full page" subtitle="All 7 sections · interactive contact form · responsive" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Abdulaziz Alangari — Technical Project Manager</title>
+<link rel="stylesheet" href="../../styles.css" />
+<link rel="stylesheet" href="portfolio.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.292.0/dist/umd/lucide.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="data.js"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react" src="Nav.jsx"></script>
+<script type="text/babel" data-presets="react" src="Hero.jsx"></script>
+<script type="text/babel" data-presets="react" src="About.jsx"></script>
+<script type="text/babel" data-presets="react" src="Experience.jsx"></script>
+<script type="text/babel" data-presets="react" src="Projects.jsx"></script>
+<script type="text/babel" data-presets="react" src="Certifications.jsx"></script>
+<script type="text/babel" data-presets="react" src="Contact.jsx"></script>
+<script type="text/babel" data-presets="react" src="Footer.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+  function App() {
+    React.useEffect(() => {
+      // Render icons after mount.
+      const draw = () => window.lucide && window.lucide.createIcons();
+      draw();
+      // Reveal-on-scroll — content is visible by default; we only hide
+      // below-the-fold items, then animate them in. Above-fold (hero) is
+      // never hidden, so the page is never blank even if nothing animates.
+      const els = [].slice.call(document.querySelectorAll(".reveal"));
+      const vh = window.innerHeight || 800;
+      const hidden = els.filter((el) => el.getBoundingClientRect().top > vh * 0.85);
+      hidden.forEach((el) => el.classList.add("pre"));
+      const reveal = (el) => el.classList.remove("pre");
+      let io = null;
+      if ("IntersectionObserver" in window && hidden.length) {
+        io = new IntersectionObserver((entries) => {
+          entries.forEach((en) => { if (en.isIntersecting) { reveal(en.target); io.unobserve(en.target); } });
+        }, { threshold: 0.1, rootMargin: "0px 0px -8% 0px" });
+        hidden.forEach((el) => io.observe(el));
+      }
+      // Failsafe: never leave anything stuck hidden.
+      const fail = setTimeout(() => els.forEach(reveal), 4000);
+      const t = setTimeout(draw, 140);
+      return () => { io && io.disconnect(); clearTimeout(t); clearTimeout(fail); };
+    }, []);
+
+    return (
+      <div className="pf">
+        <Nav />
+        <main>
+          <Hero />
+          <About />
+          <Experience />
+          <Projects />
+          <Certifications />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

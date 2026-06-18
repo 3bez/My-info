@@ -1,0 +1,98 @@
+/* ============================================================
+   ATLAS — COLOR SYSTEM
+   Paper, Ink & Vermillion. Warm ivory paper, cool near-black
+   ink, one disciplined oxblood accent. Editorial, flat, serious.
+   No emerald, no second hue. The accent is a proofreader's mark.
+   ============================================================ */
+
+:root {
+  /* --- Ink: cool, warm-neutral near-black (never pure #000) --- */
+  --ink-900: #16181D;   /* strongest text / dark surfaces / rules */
+  --ink-800: #23262C;
+  --ink-700: #3C414A;   /* body text on paper */
+  --ink-600: #4C515B;
+  --ink-500: #5E636D;
+
+  /* --- Paper: warm ivory --- */
+  --paper-50:  #FBFAF4; /* lightest surface */
+  --paper-100: #F4F1E9; /* primary background */
+  --paper-200: #EAE6DA; /* alternating section / panel */
+  --paper-300: #DBD5C7; /* hairline rule */
+  --paper-400: #BFBBB0; /* strong hairline rule */
+
+  /* --- Stone: muted text + faint marks --- */
+  --stone-600: #6C7178;
+  --stone-500: #83878F;  /* muted / caption */
+  --stone-400: #A2A6AD;  /* faint */
+
+  /* --- Vermillion: the signature accent (oxblood) --- */
+  --vermillion-200: #E7C3BB;
+  --vermillion-300: #D89384;
+  --vermillion-400: #C6503D;
+  --vermillion-500: #B23A2E;  /* primary accent */
+  --vermillion-600: #8E2E24;  /* hover / pressed */
+  --vermillion-700: #6E241C;
+
+  /* --- Semantic feedback (used sparingly) --- */
+  --success-500: #4E7C59;
+  --danger-500:  #B23A2E;
+
+  /* ============================================================
+     BACKWARD-COMPAT ALIASES — old emerald/bone/clay names now
+     resolve to the new palette so existing files stay on-brand.
+     ============================================================ */
+  --bone-50:  var(--paper-50);
+  --bone-100: var(--paper-100);
+  --bone-200: var(--paper-200);
+  --bone-300: var(--paper-300);
+  --bone-400: var(--paper-400);
+  --emerald-200: var(--vermillion-200);
+  --emerald-300: var(--vermillion-300);
+  --emerald-400: var(--vermillion-400);
+  --emerald-500: var(--vermillion-500);
+  --emerald-600: var(--vermillion-600);
+  --emerald-700: var(--vermillion-700);
+  --clay-700: #2A2C32;
+  --clay-800: #1F2127;
+
+  /* ============================================================
+     SEMANTIC ALIASES — reference these in components
+     ============================================================ */
+
+  /* Backgrounds */
+  --bg: var(--paper-100);
+  --bg-alt: var(--paper-200);
+  --bg-ink: var(--ink-900);
+  --bg-ink-soft: var(--ink-800);
+  --surface-card: var(--paper-50);
+  --surface-card-ink: var(--ink-800);
+  --surface-raised: var(--paper-50);
+
+  /* Text on paper */
+  --text-strong: var(--ink-900);
+  --text-body: var(--ink-700);
+  --text-muted: var(--stone-500);
+  --text-faint: var(--stone-400);
+
+  /* Text on ink */
+  --text-on-ink: var(--paper-100);
+  --text-on-ink-muted: #B7B2A6;
+  --text-on-ink-faint: #827E73;
+
+  /* Accent */
+  --accent: var(--vermillion-500);
+  --accent-hover: var(--vermillion-600);
+  --accent-soft: var(--vermillion-200);
+  --on-accent: var(--paper-50);
+
+  /* Borders, hairline rules & dividers */
+  --border: var(--paper-300);
+  --border-strong: var(--paper-400);
+  --border-ink: rgba(244, 241, 233, 0.14);
+  --border-ink-strong: rgba(244, 241, 233, 0.24);
+  --rule: var(--paper-300);
+  --rule-strong: var(--paper-400);
+
+  /* Focus ring */
+  --ring: var(--vermillion-500);
+}

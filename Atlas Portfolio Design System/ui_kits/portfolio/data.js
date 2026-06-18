@@ -1,0 +1,90 @@
+// Atlas portfolio — sample content. Placeholder persona; fully editable.
+window.PORTFOLIO = {
+  identity: {
+    first: "Abdulaziz",
+    last: "Alangari",
+    title: "Technical Project Manager",
+    location: "Riyadh, SA",
+    tagline: "I turn ambiguous, high-stakes initiatives into shipped product.",
+    email: "hello@alangari.me",
+    available: "Open to senior TPM & program roles",
+  },
+  stats: [
+    { value: "12", suffix: "yrs", label: "Experience" },
+    { value: "60", suffix: "+", label: "Projects delivered" },
+    { value: "5", suffix: "", label: "Industries" },
+  ],
+  about: {
+    headline: "Engineering-fluent delivery, without the drama.",
+    paragraphs: [
+      "I'm a technical project manager who lives in the space between engineering and the business. For over a decade I've led delivery for platform migrations, payments systems, and 0→1 products — turning fuzzy, high-stakes goals into roadmaps teams can actually execute.",
+      "I care about the unglamorous parts: clear scope, honest timelines, and teams that trust each other. Good project management should be invisible — you just notice that things ship.",
+    ],
+    skills: [
+      { group: "Delivery", items: ["Agile / Scrum", "Roadmapping", "Risk management", "Release planning"] },
+      { group: "Technical", items: ["System design literacy", "API & data flows", "Cloud — AWS / GCP", "CI/CD pipelines"] },
+      { group: "Leadership", items: ["Stakeholder alignment", "Cross-functional leadership", "Mentoring", "Vendor management"] },
+      { group: "Tooling", items: ["Jira & Linear", "Notion", "Figma", "Metabase"] },
+    ],
+  },
+  experience: [
+    {
+      current: true,
+      period: "2021 — Present",
+      role: "Senior Technical Project Manager",
+      company: "Northwind Payments",
+      location: "Riyadh / Remote",
+      description: "Lead delivery across platform and payments squads. Ran a zero-downtime ledger migration serving 4 markets and 2M+ users, and stood up a cross-team delivery cadence that cut release slippage by half.",
+      tags: ["payments", "platform", "agile", "stakeholders"],
+    },
+    {
+      period: "2018 — 2021",
+      role: "Technical Project Manager",
+      company: "Helix Health",
+      location: "Dubai, AE",
+      description: "Delivered an HL7 / FHIR integration platform connecting 30+ hospital systems. Cut onboarding time for new providers by 60% and owned vendor relationships end to end.",
+      tags: ["healthcare", "integrations", "fhir", "vendor mgmt"],
+    },
+    {
+      period: "2015 — 2018",
+      role: "Program Manager",
+      company: "Vector Logistics",
+      location: "Cairo, EG",
+      description: "Owned the rollout of a fleet tracking and routing platform across 9 regions, coordinating engineering, ops, and field teams under a hard regulatory deadline.",
+      tags: ["logistics", "rollout", "data", "operations"],
+    },
+    {
+      period: "2013 — 2015",
+      role: "Associate Project Manager",
+      company: "Brightwave Studios",
+      location: "Cairo, EG",
+      description: "Coordinated delivery for client web and mobile builds — scoping, sprint planning, and keeping a dozen stakeholders pointed in the same direction.",
+      tags: ["agency", "web", "mobile", "scrum"],
+    },
+  ],
+  projects: [
+    { type: "Platform", icon: "credit-card", title: "Payments re-platform", desc: "Migrated checkout to a new double-entry ledger with zero downtime across four markets.", tags: ["ledger", "aws", "event-driven"] },
+    { type: "0 → 1", icon: "rocket", title: "Merchant onboarding", desc: "Built a self-serve KYC + onboarding flow that cut activation from days to minutes.", tags: ["kyc", "workflow", "react"] },
+    { type: "Platform", icon: "activity", title: "FHIR integration hub", desc: "Connected 30+ hospital systems through a normalized clinical data layer.", tags: ["fhir", "hl7", "integrations"] },
+    { type: "Internal tool", icon: "gauge", title: "Delivery cockpit", desc: "A live program dashboard pulling Jira, Git, and incidents into one risk view.", tags: ["dashboards", "jira-api", "metrics"] },
+    { type: "Migration", icon: "split", title: "Monolith → services", desc: "Decomposed a 9-year-old monolith into domain services with no feature freeze.", tags: ["microservices", "strangler", "ci/cd"] },
+    { type: "0 → 1", icon: "route", title: "Fleet routing", desc: "Real-time routing and tracking platform rolled out to nine regions.", tags: ["maps", "realtime", "operations"] },
+  ],
+  certifications: [
+    { icon: "award", name: "PMP®", issuer: "PMI", year: "2020" },
+    { icon: "infinity", name: "PMI-ACP®", issuer: "PMI", year: "2021" },
+    { icon: "users", name: "Certified ScrumMaster", issuer: "Scrum Alliance", year: "2019" },
+    { icon: "cloud", name: "AWS Cloud Practitioner", issuer: "Amazon", year: "2022" },
+    { icon: "layers", name: "SAFe® Agilist", issuer: "Scaled Agile", year: "2023" },
+    { icon: "settings", name: "ITIL® 4 Foundation", issuer: "Axelos", year: "2021" },
+  ],
+  contact: {
+    headline: "Got something hard to ship?",
+    line: "Whether it's a migration nobody wants to touch or a 0→1 you need off the ground — I'd like to hear about it. I usually reply within a day.",
+  },
+  social: [
+    { icon: "github", label: "GitHub", href: "#" },
+    { icon: "linkedin", label: "LinkedIn", href: "#" },
+    { icon: "mail", label: "Email", href: "#contact" },
+  ],
+};

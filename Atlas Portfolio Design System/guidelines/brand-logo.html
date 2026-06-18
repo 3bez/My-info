@@ -1,0 +1,37 @@
+<!-- @dsCard group="Brand" viewport="700x240" name="Logo lockup" subtitle="Single-A monogram + vermillion period, on paper & ink" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  html, body { margin: 0; }
+  body { display: grid; grid-template-columns: 1fr 1fr; font-family: var(--font-display); }
+  .panel { padding: 38px 34px; display: flex; align-items: center; gap: 16px; }
+  .light { background: var(--paper-100); }
+  .ink { background: var(--ink-900); }
+  .mark { width: 54px; height: 54px; border-radius: 0; display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 500; font-size: 30px; letter-spacing: -0.5px; line-height: 1; flex: none; }
+  .mark.on-light { background: var(--ink-900); color: var(--paper-100); }
+  .mark.on-ink { background: var(--paper-100); color: var(--ink-900); }
+  .lockup { display: flex; flex-direction: column; gap: 6px; }
+  .word { font-weight: 500; font-size: 23px; letter-spacing: -0.02em; line-height: 1.05; white-space: nowrap; }
+  .word .a { color: var(--accent); }
+  .sub { font-family: var(--font-mono); font-size: 10px; letter-spacing: var(--tracking-label); text-transform: uppercase; }
+  .light .word { color: var(--ink-900); }
+  .light .sub { color: var(--text-muted); }
+  .ink .word { color: var(--paper-100); }
+  .ink .sub { color: var(--text-on-ink-faint); }
+</style>
+</head>
+<body>
+  <div class="panel light">
+    <div class="mark on-light">A</div>
+    <div class="lockup"><div class="word">Abdulaziz Alangari<span class="a">.</span></div><div class="sub">Technical Project Manager</div></div>
+  </div>
+  <div class="panel ink">
+    <div class="mark on-ink">A</div>
+    <div class="lockup"><div class="word">Abdulaziz Alangari<span class="a">.</span></div><div class="sub">Technical Project Manager</div></div>
+  </div>
+</body>
+</html>

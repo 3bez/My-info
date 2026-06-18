@@ -1,0 +1,25 @@
+<!-- @dsCard group="Spacing" viewport="700x210" name="Elevation — hairline rules" subtitle="Depth from 1px rules & color blocks, not drop shadows" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  html, body { margin: 0; }
+  body { background: var(--paper-100); font-family: var(--font-mono); padding: 36px 32px; }
+  .row { display: flex; gap: 40px; align-items: flex-start; }
+  .item { text-align: center; }
+  .box { width: 130px; height: 76px; background: var(--surface-card); display: grid; place-items: center; }
+  .lbl { font-size: 10px; color: var(--text-muted); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+  .n { font-size: 10px; color: var(--text-muted); margin-top: 14px; text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item"><div class="box" style="box-shadow:var(--inset-hairline)"><span class="lbl">rule</span></div><div class="n">hairline · border</div></div>
+    <div class="item"><div class="box" style="box-shadow:inset 0 0 0 1px var(--border-strong)"><span class="lbl">rule strong</span></div><div class="n">border-strong</div></div>
+    <div class="item"><div class="box" style="background:var(--paper-200);box-shadow:none"><span class="lbl">block</span></div><div class="n">color block</div></div>
+    <div class="item"><div class="box" style="background:var(--accent);box-shadow:none"></div><div class="n">accent block</div></div>
+  </div>
+</body>
+</html>

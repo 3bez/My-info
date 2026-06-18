@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin — Portfolio CMS</title>
+  <link rel="stylesheet" href="/admin/css/admin.css" />
+  <script src="https://unpkg.com/lucide@0.292.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const API = '/api/admin';
+let token = sessionStorage.getItem('admin_token') || '';
+let currentSection = 'dashboard';
+
+async function api(method, path, body) {
+  const opts = { method, headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API + path, opts);
+  const data = await res.json();
+  if (res.status === 401) { logout(); return null; }
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+function logout() { token = ''; sessionStorage.removeItem('admin_token'); render(); }
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+  try {
+    const data = await fetch(API + '/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: fd.get('username'), password: fd.get('password') }) }).then(r => r.json());
+    if (!data.token) throw new Error(data.error || 'Login failed');
+    token = data.token;
+    sessionStorage.setItem('admin_token', token);
+    render();
+  } catch (err) { errEl.textContent = err.message; errEl.style.display = 'block'; }
+}
+
+function render() { if (!token) { renderLogin(); return; } renderAdmin(); }
+
+function renderLogin() {
+  document.getElementById('app').innerHTML = `
+    <div class="login-page">
+      <div class="login-box">
+        <div class="login-logo">Admin Panel</div>
+        <h1 class="login-title">Sign in</h1>
+        <p class="login-sub">Portfolio CMS — restricted access</p>
+        <div class="login-error" id="login-error" style="display:none"></div>
+        <form id="login-form">
+          <div class="field"><label>Username</label><input name="username" type="text" autocomplete="username" required placeholder="Enter username" /></div>
+          <div class="field"><label>Password</label><input name="password" type="password" autocomplete="current-password" required placeholder="Enter password" /></div>
+          <button type="submit" class="btn btn--primary" style="width:100%;margin-top:0.5rem;justify-content:center">Sign in</button>
+        </form>
+      </div>
+    </div>
+  `;
+  document.getElementById('login-form').addEventListener('submit', handleLogin);
+}
+
+function renderAdmin() {
+  const navItems = [
+    { id: 'dashboard', icon: 'layout-dashboard', label: 'Dashboard' },
+    { id: 'profile', icon: 'user', label: 'Profile' },
+    { id: 'stats', icon: 'bar-chart-2', label: 'Stats' },
+    { id: 'experience', icon: 'briefcase', label: 'Experience' },
+    { id: 'projects', icon: 'folder-open', label: 'Projects' },
+    { id: 'certifications', icon: 'award', label: 'Certifications' },
+    { id: 'skills', icon: 'layers', label: 'Skills' },
+    { id: 'contact', icon: 'settings', label: 'Contact Settings' },
+    { id: 'messages', icon: 'mail', label: 'Messages' },
+  ];
+  document.getElementById('app').innerHTML = `
+    <div class="admin-layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar__brand">
+          <div class="sidebar__logo">Portfolio CMS</div>
+          <div class="sidebar__name">Abdulaziz Alangari</div>
+          <div class="sidebar__role">Technical Project Manager</div>
+        </div>
+        <nav class="sidebar__nav">
+          <div class="nav-section">Navigation</div>
+          ${navItems.map(item => `<button class="nav-item ${currentSection === item.id ? 'active' : ''}" onclick="navigate('${item.id}')"><i data-lucide="${item.icon}"></i>${item.label}</button>`).join('')}
+        </nav>
+        <div class="sidebar__footer">
+          <button class="btn btn--ink btn--sm" onclick="window.open('/', '_blank')" style="width:100%;justify-content:center;margin-bottom:0.5rem">View site</button>
+          <button class="btn btn--ghost btn--sm" onclick="logout()" style="width:100%;justify-content:center">Sign out</button>
+        </div>
+      </aside>
+      <main class="main-content" id="main-content"><div id="section-content">Loading...</div></main>
+    </div>
+  `;
+  lucide.createIcons();
+  loadSection(currentSection);
+}
+
+function navigate(section) {
+  currentSection = section;
+  document.querySelectorAll('.nav-item').forEach(el => { el.classList.toggle('active', el.getAttribute('onclick').includes(`'${section}'`)); });
+  loadSection(section);
+}
+
+async function loadSection(section) {
+  const el = document.getElementById('section-content');
+  el.innerHTML = '<div style="padding:2rem;color:var(--text-muted);font-family:var(--mono);font-size:0.85rem">Loading...</div>';
+  try {
+    switch(section) {
+      case 'dashboard': await renderDashboard(); break;
+      case 'profile': await renderProfile(); break;
+      case 'stats': await renderStats(); break;
+      case 'experience': await renderExperience(); break;
+      case 'projects': await renderProjects(); break;
+      case 'certifications': await renderCertifications(); break;
+      case 'skills': await renderSkills(); break;
+      case 'contact': await renderContactSettings(); break;
+      case 'messages': await renderMessages(); break;
+    }
+  } catch(err) { el.innerHTML = `<div class="alert alert--error">${err.message}</div>`; }
+  lucide.createIcons();
+}
+
+async function renderDashboard() {
+  const [profile, experience, projects, messages] = await Promise.all([api('GET','/profile'),api('GET','/experience'),api('GET','/projects'),api('GET','/messages')]);
+  const unread = (messages||[]).filter(m=>!m.is_read).length;
+  document.getElementById('section-content').innerHTML = `
+    <div class="topbar"><div><div class="topbar__title">Dashboard</div><div class="topbar__sub">Welcome back, ${profile?.first_name||'Admin'}</div></div><div class="topbar__actions"><a href="/" target="_blank" class="btn btn--ghost btn--sm"><i data-lucide="external-link" style="width:14px;height:14px"></i>View site</a></div></div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-card__num">${(experience||[]).length}</div><div class="stat-card__label">Experience entries</div></div>
+      <div class="stat-card"><div class="stat-card__num">${(projects||[]).length}</div><div class="stat-card__label">Projects</div></div>
+      <div class="stat-card"><div class="stat-card__num">${(messages||[]).length}</div><div class="stat-card__label">Total messages</div></div>
+      <div class="stat-card" style="${unread>0?'border-color:var(--accent)':''}"><div class="stat-card__num" style="${unread>0?'color:var(--accent)':''}">${unread}</div><div class="stat-card__label">Unread messages</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card__header"><div><div class="card__title">Quick actions</div><div class="card__meta">Common tasks</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <button class="btn btn--ghost" onclick="navigate('profile')" style="justify-content:flex-start"><i data-lucide="user" style="width:14px;height:14px"></i> Edit profile</button>
+          <button class="btn btn--ghost" onclick="navigate('experience')" style="justify-content:flex-start"><i data-lucide="briefcase" style="width:14px;height:14px"></i> Add experience</button>
+          <button class="btn btn--ghost" onclick="navigate('projects')" style="justify-content:flex-start"><i data-lucide="folder-open" style="width:14px;height:14px"></i> Add project</button>
+          <button class="btn btn--ghost" onclick="navigate('messages')" style="justify-content:flex-start"><i data-lucide="mail" style="width:14px;height:14px"></i> View messages ${unread>0?`<span class="badge badge--unread">${unread} new</span>`:''}</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__header"><div><div class="card__title">Recent messages</div><div class="card__meta">Last 3 received</div></div></div>
+        ${(messages||[]).slice(0,3).map(m=>`<div style="padding:0.75rem 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:600;font-size:0.875rem;color:var(--ink)">${escHtml(m.name)}</span>${!m.is_read?'<span class="badge badge--unread">New</span>':''}</div><div style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono);margin-top:0.2rem">${new Date(m.sent_at).toLocaleDateString()}</div><div style="font-size:0.875rem;color:var(--text);margin-top:0.4rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(m.message)}</div></div>`).join('')||'<div class="empty">No messages yet</div>'}
+      </div>
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+async function renderProfile() {
+  const profile = await api('GET', '/profile');
+  document.getElementById('section-content').innerHTML = `
+    <div class="topbar"><div><div class="topbar__title">Profile</div><div class="topbar__sub">Your personal information</div></div></div>
+    <div id="profile-alert"></div>
+    <div class="card">
+      <form id="profile-form">
+        <input type="hidden" name="id" value="${profile.id}" />
+        <div class="grid-2">
+          <div class="field"><label class="dark">First name</label><input class="light" name="first_name" value="${escHtml(profile.first_name||'')}" required /></div>
+          <div class="field"><label class="dark">Last name</label><input class="light" name="last_name" value="${escHtml(profile.last_name||'')}" required /></div>
+        </div>
+        <div class="field"><label class="dark">Title</label><input class="light" name="title" value="${escHtml(profile.title||'')}" required /></div>
+        <div class="field"><label class="dark">Tagline</label><input class="light" name="tagline" value="${escHtml(profile.tagline||'')}" /><span class="hint">One powerful sentence shown in the hero</span></div>
+        <div class="field"><label class="dark">Bio paragraph 1</label><textarea class="light" name="bio_0" rows="3">${escHtml((profile.bio||[])[0]||'')}</textarea></div>
+        <div class="field"><label class="dark">Bio paragraph 2 (optional)</label><textarea class="light" name="bio_1" rows="3">${escHtml((profile.bio||[])[1]||'')}</textarea></div>
+        <div class="grid-2">
+          <div class="field"><label class="dark">Location</label><input class="light" name="location" value="${escHtml(profile.location||'')}" /></div>
+          <div class="field"><label class="dark">Availability status</label><input class="light" name="available_text" value="${escHtml(profile.available_text||'')}" /></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label class="dark">Email</label><input class="light" name="email" type="email" value="${escHtml(profile.email||'')}" /></div>
+          <div class="field"><label class="dark">LinkedIn URL</label><input class="light" name="linkedin" value="${escHtml(profile.linkedin||'')}" /></div>
+        </div>
+        <div class="field"><label class="dark">GitHub URL</label><input class="light" name="github" value="${escHtml(profile.github||'')}" /></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:1rem"><button type="submit" class="btn btn--primary">Save profile</button></div>
+      </form>
+    </div>
+  `;
+  document.getElementById('profile-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const bio = [fd.get('bio_0'),fd.get('bio_1')].filter(Boolean);
+    try {
+      await api('PUT', '/profile', { id:fd.get('id'), first_name:fd.get('first_name'), last_name:fd.get('last_name'), title:fd.get('title'), tagline:fd.get('tagline'), bio, location:fd.get('location'), available_text:fd.get('available_text'), email:fd.get('email'), linkedin:fd.get('linkedin'), github:fd.get('github') });
+      showAlert('profile-alert', 'Profile saved successfully.', 'success');
+    } catch(err) { showAlert('profile-alert', err.message, 'error'); }
+  });
+}
+
+async function renderStats() {
+  const stats = await api('GET', '/stats');
+  document.getElementById('section-content').innerHTML = `
+    <div class="topbar"><div><div class="topbar__title">Stats</div><div class="topbar__sub">The 3 numbers shown in the hero section</div></div><button class="btn btn--primary btn--sm" onclick="openStatModal()"><i data-lucide="plus" style="width:14px;height:14px"></i> Add stat</button></div>
+    <div id="stats-alert"></div>
+    <div id="stats-list">
+      ${stats.map(s=>`<div class="list-item"><div class="list-item__body"><div class="list-item__title">${escHtml(s.value)}${escHtml(s.suffix)} — ${escHtml(s.label)}</div><div class="list-item__meta">Order: ${s.sort_order}</div></div><div class="list-item__actions"><button class="btn btn--ghost btn--sm" onclick="openStatModal(${JSON.stringify(s).replace(/"/g,'&quot;')})">Edit</button><button class="btn btn--danger btn--sm" onclick="deleteStat('${s.id}')">Delete</button></div></div>`).join('')||'<div class="empty">No stats yet</div>'}
+    </div>
+    <div id="stat-modal"></div>
+  `;
+  lucide.createIcons();
+}
+
+function openStatModal(stat=null) {
+  const isEdit=!!stat;
+  document.getElementById('stat-modal').innerHTML=`<div class="modal-backdrop" onclick="if(event.target===this)closeModal('stat-modal')"><div class="modal"><div class="modal__header"><div class="modal__title">${isEdit?'Edit':'Add'} stat</div><button class="modal__close" onclick="closeModal('stat-modal')">✕</button></div><div class="modal__body"><form id="stat-form">${isEdit?`<input type="hidden" name="id" value="${stat.id}" />`:''}<div class="grid-2"><div class="field"><label class="dark">Value</label><input class="light" name="value" value="${isEdit?escHtml(stat.value):''}" placeholder="12" required /></div><div class="field"><label class="dark">Suffix</label><input class="light" name="suffix" value="${isEdit?escHtml(stat.suffix):''}" placeholder="yrs or +" /></div></div><div class="field"><label class="dark">Label</label><input class="light" name="label" value="${isEdit?escHtml(stat.label):''}" placeholder="Years of experience" required /></div><div class="field"><label class="dark">Order</label><input class="light" name="sort_order" type="number" value="${isEdit?stat.sort_order:0}" /></div></form></div><div class="modal__footer"><button class="btn btn--ghost" onclick="closeModal('stat-modal')">Cancel</button><button class="btn btn--primary" onclick="saveStat(${isEdit})">Save</button></div></div></div>`;
+}
+async function saveStat(isEdit) {
+  const fd=new FormData(document.getElementById('stat-form'));
+  const payload={value:fd.get('value'),suffix:fd.get('suffix'),label:fd.get('label'),sort_order:parseInt(fd.get('sort_order'))||0};
+  try { if(isEdit)await api('PUT',`/stats/${fd.get('id')}`,payload); else await api('POST','/stats',payload); closeModal('stat-modal'); await renderStats(); showAlert('stats-alert','Saved.','success'); } catch(err){showAlert('stats-alert',err.message,'error');}
+}
+async function deleteStat(id){if(!confirm('Delete this stat?'))return;await api('DELETE',`/stats/${id}`);await renderStats();}
+
+async function renderExperience() {
+  const items=await api('GET','/experience');
+  document.getElementById('section-content').innerHTML=`
+    <div class="topbar"><div><div class="topbar__title">Experience</div><div class="topbar__sub">${items.length} entries in your timeline</div></div><button class="btn btn--primary btn--sm" onclick="openExpModal()"><i data-lucide="plus" style="width:14px;height:14px"></i> Add role</button></div>
+    <div id="exp-alert"></div>
+    <div id="exp-list">
+      ${items.map(e=>`<div class="list-item"><div class="list-item__body"><div class="list-item__title">${escHtml(e.role)} — ${escHtml(e.company)}${e.is_current?'<span class="badge badge--current">Current</span>':''}${!e.is_visible?'<span class="badge badge--hidden">Hidden</span>':''}</div><div class="list-item__meta">${escHtml(e.period)} · ${escHtml(e.location)}</div><div class="tag-list">${(e.tags||[]).map(t=>`<span class="tag-chip">${escHtml(t)}</span>`).join('')}</div></div><div class="list-item__actions"><button class="btn btn--ghost btn--sm" onclick='openExpModal(${JSON.stringify(e).replace(/'/g,"&#39;")})'>Edit</button><button class="btn btn--danger btn--sm" onclick="deleteExp('${e.id}')">Delete</button></div></div>`).join('')||'<div class="empty">No experience entries yet</div>'}
+    </div>
+    <div id="exp-modal"></div>
+  `;
+  lucide.createIcons();
+}
+function openExpModal(item=null){
+  const isEdit=!!item;
+  document.getElementById('exp-modal').innerHTML=`<div class="modal-backdrop" onclick="if(event.target===this)closeModal('exp-modal')"><div class="modal"><div class="modal__header"><div class="modal__title">${isEdit?'Edit':'Add'} experience</div><button class="modal__close" onclick="closeModal('exp-modal')">✕</button></div><div class="modal__body"><form id="exp-form">${isEdit?`<input type="hidden" name="id" value="${item.id}" />`:''}<div class="grid-2"><div class="field"><label class="dark">Role / Title</label><input class="light" name="role" value="${isEdit?escHtml(item.role):''}" required /></div><div class="field"><label class="dark">Company</label><input class="light" name="company" value="${isEdit?escHtml(item.company):''}" required /></div></div><div class="grid-2"><div class="field"><label class="dark">Location</label><input class="light" name="location" value="${isEdit?escHtml(item.location):''}" /></div><div class="field"><label class="dark">Period</label><input class="light" name="period" value="${isEdit?escHtml(item.period):''}" placeholder="2021 — Present" required /></div></div><div class="field"><label class="dark">Description</label><textarea class="light" name="description" rows="4">${isEdit?escHtml(item.description):''}</textarea></div><div class="field"><label class="dark">Tags (comma separated)</label><input class="light" name="tags" value="${isEdit?(item.tags||[]).join(', '):''}" placeholder="agile, payments, stakeholders" /></div><div class="field"><label class="dark">Sort order</label><input class="light" name="sort_order" type="number" value="${isEdit?item.sort_order:0}" /></div><div style="display:flex;gap:1.5rem;margin-top:0.5rem"><label class="toggle"><div class="toggle__track ${isEdit&&item.is_current?'on':''}" id="toggle-current"><div class="toggle__thumb"></div></div><span class="toggle__label">Current role</span></label><label class="toggle"><div class="toggle__track ${!isEdit||item.is_visible?'on':''}" id="toggle-visible"><div class="toggle__thumb"></div></div><span class="toggle__label">Visible</span></label></div></form></div><div class="modal__footer"><button class="btn btn--ghost" onclick="closeModal('exp-modal')">Cancel</button><button class="btn btn--primary" onclick="saveExp(${isEdit})">Save</button></div></div></div>`;
+  setupToggle('toggle-current');setupToggle('toggle-visible');
+}
+async function saveExp(isEdit){
+  const fd=new FormData(document.getElementById('exp-form'));
+  const tags=fd.get('tags').split(',').map(t=>t.trim()).filter(Boolean);
+  const payload={role:fd.get('role'),company:fd.get('company'),location:fd.get('location'),period:fd.get('period'),description:fd.get('description'),tags,sort_order:parseInt(fd.get('sort_order'))||0,is_current:document.getElementById('toggle-current').classList.contains('on'),is_visible:document.getElementById('toggle-visible').classList.contains('on')};
+  try{if(isEdit)await api('PUT',`/experience/${fd.get('id')}`,payload);else await api('POST','/experience',payload);closeModal('exp-modal');await renderExperience();showAlert('exp-alert','Saved.','success');}catch(err){showAlert('exp-alert',err.message,'error');}
+}
+async function deleteExp(id){if(!confirm('Delete this experience entry?'))return;await api('DELETE',`/experience/${id}`);await renderExperience();}
+
+async function renderProjects(){
+  const items=await api('GET','/projects');
+  document.getElementById('section-content').innerHTML=`
+    <div class="topbar"><div><div class="topbar__title">Projects</div><div class="topbar__sub">${items.length} projects in your portfolio</div></div><button class="btn btn--primary btn--sm" onclick="openProjModal()"><i data-lucide="plus" style="width:14px;height:14px"></i> Add project</button></div>
+    <div id="proj-alert"></div>
+    <div id="proj-list">
+      ${items.map(p=>`<div class="list-item"><div class="list-item__body"><div class="list-item__title">${escHtml(p.title)}<span class="badge badge--hidden">${escHtml(p.type)}</span>${!p.is_visible?'<span class="badge badge--hidden">Hidden</span>':''}${p.include_in_cv?'<span class="badge badge--current">In CV</span>':''}</div><div class="list-item__meta">${escHtml(p.description?.substring(0,80))}...</div><div class="tag-list">${(p.tags||[]).map(t=>`<span class="tag-chip">${escHtml(t)}</span>`).join('')}</div></div><div class="list-item__actions"><button class="btn btn--ghost btn--sm" onclick='openProjModal(${JSON.stringify(p).replace(/'/g,"&#39;")})'>Edit</button><button class="btn btn--danger btn--sm" onclick="deleteProj('${p.id}')">Delete</button></div></div>`).join('')||'<div class="empty">No projects yet</div>'}
+    </div>
+    <div id="proj-modal"></div>
+  `;
+  lucide.createIcons();
+}
+function openProjModal(item=null){
+  const isEdit=!!item;
+  document.getElementById('proj-modal').innerHTML=`<div class="modal-backdrop" onclick="if(event.target===this)closeModal('proj-modal')"><div class="modal"><div class="modal__header"><div class="modal__title">${isEdit?'Edit':'Add'} project</div><button class="modal__close" onclick="closeModal('proj-modal')">✕</button></div><div class="modal__body"><form id="proj-form">${isEdit?`<input type="hidden" name="id" value="${item.id}" />`:''}<div class="field"><label class="dark">Title</label><input class="light" name="title" value="${isEdit?escHtml(item.title):''}" required /></div><div class="grid-2"><div class="field"><label class="dark">Type</label><input class="light" name="type" value="${isEdit?escHtml(item.type):''}" placeholder="Platform, 0 → 1, Migration..." /></div><div class="field"><label class="dark">Icon (Lucide name)</label><input class="light" name="icon" value="${isEdit?escHtml(item.icon):''}" placeholder="rocket, credit-card..." /></div></div><div class="field"><label class="dark">Description</label><textarea class="light" name="description" rows="3">${isEdit?escHtml(item.description):''}</textarea></div><div class="field"><label class="dark">Tags (comma separated)</label><input class="light" name="tags" value="${isEdit?(item.tags||[]).join(', '):''}" /></div><div class="field"><label class="dark">Link (optional)</label><input class="light" name="link" value="${isEdit?escHtml(item.link||'):''}" placeholder="https://..." /></div><div class="field"><label class="dark">Sort order</label><input class="light" name="sort_order" type="number" value="${isEdit?item.sort_order:0}" /></div><div style="display:flex;gap:1.5rem;margin-top:0.5rem"><label class="toggle"><div class="toggle__track ${!isEdit||item.is_visible?'on':''}" id="toggle-pvis"><div class="toggle__thumb"></div></div><span class="toggle__label">Visible on site</span></label><label class="toggle"><div class="toggle__track ${!isEdit||item.include_in_cv?'on':''}" id="toggle-pcv"><div class="toggle__thumb"></div></div><span class="toggle__label">Include in CV</span></label></div></form></div><div class="modal__footer"><button class="btn btn--ghost" onclick="closeModal('proj-modal')">Cancel</button><button class="btn btn--primary" onclick="saveProj(${isEdit})">Save</button></div></div></div>`;
+  setupToggle('toggle-pvis');setupToggle('toggle-pcv');
+}
+async function saveProj(isEdit){
+  const fd=new FormData(document.getElementById('proj-form'));
+  const tags=fd.get('tags').split(',').map(t=>t.trim()).filter(Boolean);
+  const payload={title:fd.get('title'),type:fd.get('type'),icon:fd.get('icon'),description:fd.get('description'),tags,link:fd.get('link')||'',sort_order:parseInt(fd.get('sort_order'))||0,is_visible:document.getElementById('toggle-pvis').classList.contains('on'),include_in_cv:document.getElementById('toggle-pcv').classList.contains('on')};
+  try{if(isEdit)await api('PUT',`/projects/${fd.get('id')}`,payload);else await api('POST','/projects',payload);closeModal('proj-modal');await renderProjects();showAlert('proj-alert','Saved.','success');}catch(err){showAlert('proj-alert',err.message,'error');}
+}
+async function deleteProj(id){if(!confirm('Delete this project?'))return;await api('DELETE',`/projects/${id}`);await renderProjects();}
+
+async function renderCertifications(){
+  const items=await api('GET','/certifications');
+  document.getElementById('section-content').innerHTML=`
+    <div class="topbar"><div><div class="topbar__title">Certifications</div><div class="topbar__sub">${items.length} certifications</div></div><button class="btn btn--primary btn--sm" onclick="openCertModal()"><i data-lucide="plus" style="width:14px;height:14px"></i> Add cert</button></div>
+    <div id="cert-alert"></div>
+    <div id="cert-list">
+      ${items.map(c=>`<div class="list-item"><div class="list-item__body"><div class="list-item__title">${escHtml(c.name)}${!c.is_visible?'<span class="badge badge--hidden">Hidden</span>':''}</div><div class="list-item__meta">${escHtml(c.issuer)} · ${escHtml(c.year)}</div></div><div class="list-item__actions"><button class="btn btn--ghost btn--sm" onclick='openCertModal(${JSON.stringify(c).replace(/'/g,"&#39;")})'>Edit</button><button class="btn btn--danger btn--sm" onclick="deleteCert('${c.id}')">Delete</button></div></div>`).join('')||'<div class="empty">No certifications yet</div>'}
+    </div>
+    <div id="cert-modal"></div>
+  `;
+  lucide.createIcons();
+}
+function openCertModal(item=null){
+  const isEdit=!!item;
+  document.getElementById('cert-modal').innerHTML=`<div class="modal-backdrop" onclick="if(event.target===this)closeModal('cert-modal')"><div class="modal"><div class="modal__header"><div class="modal__title">${isEdit?'Edit':'Add'} certification</div><button class="modal__close" onclick="closeModal('cert-modal')">✕</button></div><div class="modal__body"><form id="cert-form">${isEdit?`<input type="hidden" name="id" value="${item.id}" />`:''}<div class="field"><label class="dark">Name</label><input class="light" name="name" value="${isEdit?escHtml(item.name):''}" required /></div><div class="grid-2"><div class="field"><label class="dark">Issuer</label><input class="light" name="issuer" value="${isEdit?escHtml(item.issuer):''}" required /></div><div class="field"><label class="dark">Year</label><input class="light" name="year" value="${isEdit?escHtml(item.year):''}" placeholder="2024" /></div></div><div class="grid-2"><div class="field"><label class="dark">Icon (Lucide name)</label><input class="light" name="icon" value="${isEdit?escHtml(item.icon):''}" placeholder="award, cloud..." /></div><div class="field"><label class="dark">Sort order</label><input class="light" name="sort_order" type="number" value="${isEdit?item.sort_order:0}" /></div></div><label class="toggle" style="margin-top:0.5rem"><div class="toggle__track ${!isEdit||item.is_visible?'on':''}" id="toggle-cvis"><div class="toggle__thumb"></div></div><span class="toggle__label">Visible</span></label></form></div><div class="modal__footer"><button class="btn btn--ghost" onclick="closeModal('cert-modal')">Cancel</button><button class="btn btn--primary" onclick="saveCert(${isEdit})">Save</button></div></div></div>`;
+  setupToggle('toggle-cvis');
+}
+async function saveCert(isEdit){
+  const fd=new FormData(document.getElementById('cert-form'));
+  const payload={name:fd.get('name'),issuer:fd.get('issuer'),year:fd.get('year'),icon:fd.get('icon'),sort_order:parseInt(fd.get('sort_order'))||0,is_visible:document.getElementById('toggle-cvis').classList.contains('on')};
+  try{if(isEdit)await api('PUT',`/certifications/${fd.get('id')}`,payload);else await api('POST','/certifications',payload);closeModal('cert-modal');await renderCertifications();showAlert('cert-alert','Saved.','success');}catch(err){showAlert('cert-alert',err.message,'error');}
+}
+async function deleteCert(id){if(!confirm('Delete this certification?'))return;await api('DELETE',`/certifications/${id}`);await renderCertifications();}
+
+async function renderSkills(){
+  const items=await api('GET','/skills');
+  const groups={};
+  items.forEach(s=>{if(!groups[s.skill_group])groups[s.skill_group]=[];groups[s.skill_group].push(s);});
+  document.getElementById('section-content').innerHTML=`
+    <div class="topbar"><div><div class="topbar__title">Skills</div><div class="topbar__sub">${items.length} skills across ${Object.keys(groups).length} groups</div></div><button class="btn btn--primary btn--sm" onclick="openSkillModal()"><i data-lucide="plus" style="width:14px;height:14px"></i> Add skill</button></div>
+    <div id="skill-alert"></div>
+    ${Object.entries(groups).map(([group,skills])=>`<div class="card" style="margin-bottom:1rem"><div class="card__header"><div class="card__title">${escHtml(group)}</div></div>${skills.map(s=>`<div class="list-item" style="margin-bottom:0.5rem"><div class="list-item__body"><div class="list-item__title">${escHtml(s.name)}${!s.is_visible?'<span class="badge badge--hidden">Hidden</span>':''}</div></div><div class="list-item__actions"><button class="btn btn--ghost btn--sm" onclick='openSkillModal(${JSON.stringify(s).replace(/'/g,"&#39;")})'>Edit</button><button class="btn btn--danger btn--sm" onclick="deleteSkill('${s.id}')">Delete</button></div></div>`).join('')}</div>`).join('')||'<div class="empty">No skills yet</div>'}
+    <div id="skill-modal"></div>
+  `;
+  lucide.createIcons();
+}
+function openSkillModal(item=null){
+  const isEdit=!!item;
+  document.getElementById('skill-modal').innerHTML=`<div class="modal-backdrop" onclick="if(event.target===this)closeModal('skill-modal')"><div class="modal"><div class="modal__header"><div class="modal__title">${isEdit?'Edit':'Add'} skill</div><button class="modal__close" onclick="closeModal('skill-modal')">✕</button></div><div class="modal__body"><form id="skill-form">${isEdit?`<input type="hidden" name="id" value="${item.id}" />`:''}<div class="field"><label class="dark">Skill name</label><input class="light" name="name" value="${isEdit?escHtml(item.name):''}" required /></div><div class="field"><label class="dark">Group</label><input class="light" name="skill_group" value="${isEdit?escHtml(item.skill_group):''}" placeholder="Delivery, Technical, Leadership, Tooling" required /></div><div class="field"><label class="dark">Sort order</label><input class="light" name="sort_order" type="number" value="${isEdit?item.sort_order:0}" /></div><label class="toggle" style="margin-top:0.5rem"><div class="toggle__track ${!isEdit||item.is_visible?'on':''}" id="toggle-svis"><div class="toggle__thumb"></div></div><span class="toggle__label">Visible</span></label></form></div><div class="modal__footer"><button class="btn btn--ghost" onclick="closeModal('skill-modal')">Cancel</button><button class="btn btn--primary" onclick="saveSkill(${isEdit})">Save</button></div></div></div>`;
+  setupToggle('toggle-svis');
+}
+async function saveSkill(isEdit){
+  const fd=new FormData(document.getElementById('skill-form'));
+  const payload={name:fd.get('name'),skill_group:fd.get('skill_group'),sort_order:parseInt(fd.get('sort_order'))||0,is_visible:document.getElementById('toggle-svis').classList.contains('on')};
+  try{if(isEdit)await api('PUT',`/skills/${fd.get('id')}`,payload);else await api('POST','/skills',payload);closeModal('skill-modal');await renderSkills();showAlert('skill-alert','Saved.','success');}catch(err){showAlert('skill-alert',err.message,'error');}
+}
+async function deleteSkill(id){if(!confirm('Delete this skill?'))return;await api('DELETE',`/skills/${id}`);await renderSkills();}
+
+async function renderContactSettings(){
+  const settings=await api('GET','/contact-settings');
+  document.getElementById('section-content').innerHTML=`
+    <div class="topbar"><div><div class="topbar__title">Contact Settings</div><div class="topbar__sub">Text shown in the contact section</div></div></div>
+    <div id="contact-alert"></div>
+    <div class="card">
+      <form id="contact-form">
+        <input type="hidden" name="id" value="${settings.id}" />
+        <div class="field"><label class="dark">Headline</label><input class="light" name="headline" value="${escHtml(settings.headline||'')}" /><span class="hint">Big text shown above the contact form</span></div>
+        <div class="field"><label class="dark">Subtext</label><textarea class="light" name="line" rows="3">${escHtml(settings.line||'')}</textarea><span class="hint">Supporting paragraph under the headline</span></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:1rem"><button type="submit" class="btn btn--primary">Save</button></div>
+      </form>
+    </div>
+  `;
+  document.getElementById('contact-form').addEventListener('submit',async(e)=>{e.preventDefault();const fd=new FormData(e.target);try{await api('PUT','/contact-settings',{id:fd.get('id'),headline:fd.get('headline'),line:fd.get('line')});showAlert('contact-alert','Saved.','success');}catch(err){showAlert('contact-alert',err.message,'error');}});
+}
+
+async function renderMessages(){
+  const messages=await api('GET','/messages');
+  const unread=messages.filter(m=>!m.is_read).length;
+  document.getElementById('section-content').innerHTML=`
+    <div class="topbar"><div><div class="topbar__title">Messages</div><div class="topbar__sub">${messages.length} total · ${unread} unread</div></div></div>
+    <div id="msg-alert"></div>
+    <div id="msg-list">
+      ${messages.map(m=>`<div class="msg-item ${!m.is_read?'unread':''}"><div class="msg-item__header"><div><div class="msg-item__name">${escHtml(m.name)}${!m.is_read?'<span class="badge badge--unread">New</span>':''}</div><div class="msg-item__contact">${m.email?`✉ ${escHtml(m.email)}`:''}${m.phone?` · 📞 ${escHtml(m.phone)}`:''}</div></div><div class="msg-item__time">${new Date(m.sent_at).toLocaleString()}</div></div><div class="msg-item__body">${escHtml(m.message)}</div><div class="msg-item__actions">${m.email?`<a href="mailto:${escHtml(m.email)}" class="btn btn--ghost btn--sm">Reply</a>`:''} ${!m.is_read?`<button class="btn btn--ghost btn--sm" onclick="markRead('${m.id}')">Mark as read</button>`:''}<button class="btn btn--danger btn--sm" onclick="deleteMsg('${m.id}')">Delete</button></div></div>`).join('')||'<div class="empty">No messages yet — your contact form is ready</div>'}
+    </div>
+  `;
+}
+async function markRead(id){await api('PUT',`/messages/${id}/read`);await renderMessages();}
+async function deleteMsg(id){if(!confirm('Delete this message?'))return;await api('DELETE',`/messages/${id}`);await renderMessages();}
+
+function escHtml(str){if(!str)return '';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function closeModal(id){const el=document.getElementById(id);if(el)el.innerHTML='';}
+function setupToggle(id){const el=document.getElementById(id);if(!el)return;el.parentElement.addEventListener('click',()=>{el.classList.toggle('on');});}
+function showAlert(id,msg,type){const el=document.getElementById(id);if(!el)return;el.innerHTML=`<div class="alert alert--${type}">${escHtml(msg)}</div>`;setTimeout(()=>{if(el)el.innerHTML='';},4000);}
+
+render();
+</script>
+</body>
+</html>

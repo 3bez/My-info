@@ -1,0 +1,34 @@
+/* ============================================================
+   ATLAS — SHADOWS, MOTION, MISC EFFECTS
+   Flat editorial system: depth comes from hairline rules and
+   color blocks, not drop shadows. Corners are square.
+   ============================================================ */
+
+:root {
+  /* Shadows — effectively flat. Structure is carried by 1px rules. */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 1px 0 rgba(22, 24, 29, 0.04);
+  --shadow-accent: none;
+
+  /* Inset / hairlines — the real workhorse */
+  --inset-hairline: inset 0 0 0 1px var(--border);
+
+  /* Radii — square by default. Editorial, printed, deliberate. */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-pill: 999px;   /* reserved for the rare true pill */
+
+  /* Motion — confident, never bouncy */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.25, 1);   /* @kind other */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+  --dur-fast: 140ms; /* @kind other */
+  --dur: 240ms;      /* @kind other */
+  --dur-slow: 520ms; /* @kind other */
+
+  /* Grain / texture overlay opacity (used on ink surfaces) */
+  --grain-opacity: 0.04; /* @kind other */
+}

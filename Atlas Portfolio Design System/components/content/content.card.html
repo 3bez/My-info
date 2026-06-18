@@ -1,0 +1,79 @@
+<!-- @dsCard group="Components" viewport="700x560" name="Content — badges, tags, stats, cards, timeline" subtitle="The building blocks of the portfolio sections" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--bone-100); font-family: var(--font-body); padding: 30px 32px; }
+  .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); margin: 0 0 12px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 28px; }
+  .stats { display: flex; gap: 48px; margin-bottom: 32px; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 32px; }
+  .ct { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; margin: 1rem 0 0.4rem; color: var(--text-strong); letter-spacing: -0.01em; }
+  .cp { font-size: 0.95rem; line-height: 1.55; color: var(--text-body); margin: 0; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { Tag, Badge, Stat, SectionLabel, Card, TimelineEntry } = window.AtlasPortfolioDesignSystem_0beb6f;
+  const Ico = (n) => <i data-lucide={n}></i>;
+  function Demo() {
+    return (
+      <div>
+        <p className="lbl">Section label · badges · tags</p>
+        <div className="row"><SectionLabel number="03">Projects</SectionLabel></div>
+        <div className="row">
+          <Badge variant="accent">Platform</Badge>
+          <Badge variant="muted">Internal tool</Badge>
+          <Badge variant="outline" dot>0 → 1</Badge>
+          <Tag>roadmapping</Tag>
+          <Tag variant="solid">agile</Tag>
+          <Tag variant="accent">payments</Tag>
+        </div>
+
+        <p className="lbl">Stats</p>
+        <div className="stats">
+          <Stat value="12" suffix="yrs" label="Experience" />
+          <Stat value="60" suffix="+" label="Projects delivered" />
+          <Stat value="5" label="Industries" />
+        </div>
+
+        <p className="lbl">Cards</p>
+        <div className="cards">
+          <Card hover icon={Ico("layers")}>
+            <Badge variant="accent">Platform</Badge>
+            <div className="ct">Payments re-platform</div>
+            <p className="cp">Migrated checkout to a new ledger with zero downtime across 4 markets.</p>
+          </Card>
+          <Card hover icon={Ico("award")}>
+            <div className="ct">PMP®</div>
+            <p className="cp">Project Management Professional — PMI, 2020.</p>
+          </Card>
+        </div>
+
+        <p className="lbl">Timeline entry</p>
+        <TimelineEntry
+          current
+          period="2021 — Present"
+          role="Senior Technical Project Manager"
+          company="Northwind"
+          location="Remote"
+          description="Lead delivery across platform and payments squads; ran a zero-downtime ledger migration."
+          tags={["agile", "roadmapping", "stakeholders"]}
+        />
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+  setTimeout(() => window.lucide && window.lucide.createIcons(), 80);
+</script>
+</body>
+</html>
