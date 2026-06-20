@@ -8,10 +8,11 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ── Security middleware ──────────────────────────────────────
-app.use(helmet({
-  contentSecurityPolicy: false,
-}));
+// ── Trust proxy (required when behind Coolify / Nginx reverse proxy) ─
+app.set('trust proxy', 1);
+
+// ── Security middleware ──────────────────────────────────────────
+app.use(helmet({ contentSecurityPolicy: false }));
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' ? false : '*',
@@ -20,7 +21,7 @@ app.use(cors({
 
 app.use(express.json({ limit: '10kb' }));
 
-// ── Rate limiting ────────────────────────────────────────────
+// ── Rate limiting ────────────────────────────────────────────────
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -39,21 +40,21 @@ const adminLimiter = rateLimit({
   message: { error: 'Too many login attempts.' },
 });
 
-// ── API Routes ───────────────────────────────────────────────
+// ── API Routes ───────────────────────────────────────────────────
 app.use('/api/content', apiLimiter, require('./routes/content'));
 app.use('/api/contact', contactLimiter, require('./routes/contact'));
 app.use('/api/admin', adminLimiter, require('./routes/admin'));
 
-// ── Static files ─────────────────────────────────────────────
+// ── Static files ─────────────────────────────────────────────────
 app.use('/admin', express.static(path.join(__dirname, '../admin')));
 app.use(express.static(path.join(__dirname, '../public')));
 
-// ── Catch-all ────────────────────────────────────────────────
+// ── Catch-all ────────────────────────────────────────────────────
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-// ── Start ────────────────────────────────────────────────────
+// ── Start ────────────────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
   console.log(`📁 Portfolio: http://localhost:${PORT}`);
